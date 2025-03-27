@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.ConfigureLogging();
 builder.ConfigurePostgreSql();
+builder.ConfigureFluentValidation();
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();

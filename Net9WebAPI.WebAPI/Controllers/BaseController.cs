@@ -12,6 +12,13 @@ public abstract class BaseController : ControllerBase
             return Ok(((dynamic)result).GetContent());    
         }
 
+        if (result.GetType().IsGenericType && result.GetType().GetGenericTypeDefinition() == typeof(ValidationProblemApiResult<>))
+        {
+            var validationProblemDetails = new ValidationProblemDetails(((dynamic)result).GetContent());
+
+            return ValidationProblem(validationProblemDetails);
+        }
+
         return result switch
         {
             InvalidRequestApiResult => BadRequest(),

@@ -8,6 +8,14 @@ public class ApiContentResult<TResponse>(TResponse content) : IApiContentResult<
     }
 }
 
+public class ValidationProblemApiResult<TResponse>(TResponse content) : IApiContentResult<TResponse>
+{
+    public TResponse GetContent()
+    {
+        return content;
+    }
+}
+
 public sealed class InvalidRequestApiResult : IApiResult
 {
 }

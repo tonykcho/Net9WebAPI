@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.Results;
 using Net9WebAPI.Application.Abstract;
 
 namespace Net9WebAPI.WebAPI.Pipelines;
@@ -8,11 +10,26 @@ public class ApiRequestPipeline(IServiceProvider serviceProvider)
     {
         // Insert any pre request execution behavior here
 
-        // Insert validation here
+        // Fluent Validation
+        var validator = serviceProvider.GetService<IValidator<TRequest>>();
+
+        if (validator is not null)
+        {
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if (validationResult.IsValid == false)
+            {
+                IDictionary<string, string[]> errors = validationResult.ToDictionary();
+
+                return new ValidationProblemApiResult<IDictionary<string, string[]>>(errors);
+            }
+        }
 
         var handler = serviceProvider.GetRequiredService<IApiRequestHandler<TRequest>>();
 
         IApiResult apiResult = await handler.Handle(request, cancellationToken);
+
+        // Insert any post request execution behavior here
 
         return apiResult;
     }

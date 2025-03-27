@@ -18,4 +18,14 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
 
         return CreateResponse(result);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateJobApplicationAsync([FromBody] CreateJobApplicationRequest request, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var result = await apiRequestPipeline.Pipe(request, cancellationToken);
+
+        return CreateResponse(result);
+    }
 }
