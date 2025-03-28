@@ -29,3 +29,6 @@ app.UseHttpLogging();
 app.UseHttpsRedirection();
 
 app.Run();
+
+// Mark the Program class as a partial class to support functional tests.
+public partial class Program { }
