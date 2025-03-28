@@ -9,7 +9,20 @@ namespace Net9WebAPI.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : BaseController
 {
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetJobApplicationsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var result = await apiRequestPipeline.Pipe(new GetJobApplicationsRequest(), cancellationToken);
+
+        return CreateResponse(result);
+    }
+
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetJobApplicationAsync([FromRoute] GetJobApplicationRequest request, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -20,6 +33,8 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateJobApplicationAsync([FromBody] CreateJobApplicationRequest request, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();

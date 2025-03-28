@@ -5,6 +5,7 @@ namespace Net9WebAPI.WebAPI.Controllers;
 
 public abstract class BaseController : ControllerBase
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public IActionResult CreateResponse(IApiResult result)
     {
         if (result.GetType().IsGenericType && result.GetType().GetGenericTypeDefinition() == typeof(ApiContentResult<>))

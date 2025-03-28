@@ -21,7 +21,7 @@ await app.MigrateAsync();
 app.MapControllers();
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi("/openapi/{documentName}/openapi.json");
 }
 
 // Configure dotnet Middleware

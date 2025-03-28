@@ -7,5 +7,5 @@ public class JobApplicationDto
     public required string JobTitle { get; set;}
     public required string CompanyName { get; set; }
     public JobApplicationStatus ApplicationStatus { get; set; }
-    public DateTime ApplicationDate { get; set; }
+    public DateTimeOffset ApplicationDate { get; set; }
 }

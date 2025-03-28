@@ -27,11 +27,11 @@ public class Net9WebAPIDbContext(IConfiguration configuration) : DbContext
             {
                 case EntityState.Added:
                     entry.Entity.Guid = Guid.NewGuid();
-                    entry.Entity.CreatedAt = DateTime.UtcNow;
-                    entry.Entity.LastUpdatedAt = DateTime.UtcNow;
+                    entry.Entity.CreatedAt = DateTimeOffset.UtcNow;
+                    entry.Entity.LastUpdatedAt = DateTimeOffset.UtcNow;
                     break;
                 case EntityState.Modified:
-                    entry.Entity.LastUpdatedAt = DateTime.UtcNow;
+                    entry.Entity.LastUpdatedAt = DateTimeOffset.UtcNow;
                     break;
             }
         }

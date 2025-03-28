@@ -10,7 +10,7 @@ public class CreateJobApplicationRequest : IApiRequest
     public string? JobTitle { get; set; }
     public string? CompanyName { get; set; }
     public JobApplicationStatus ApplicationStatus { get; set; }
-    public DateTime ApplicationDate { get; set; }
+    public DateTimeOffset ApplicationDate { get; set; }
 
     public class Validator : AbstractValidator<CreateJobApplicationRequest>
     {
@@ -29,7 +29,7 @@ public class CreateJobApplicationRequest : IApiRequest
                 .WithMessage("Invalid application status.");
 
             RuleFor(request => request.ApplicationDate)
-                .NotEqual(default(DateTime))
+                .NotEqual(default(DateTimeOffset))
                 .WithMessage("Application date is required.");
         }
     }
@@ -44,7 +44,7 @@ public class CreateJobApplicationRequestHandler(IJobApplicationRepository jobApp
             JobTitle = request.JobTitle ?? string.Empty,
             CompanyName = request.CompanyName ?? string.Empty,
             ApplicationStatus = request.ApplicationStatus,
-            ApplicationDate = request.ApplicationDate
+            ApplicationDate = request.ApplicationDate.ToUniversalTime()
         };
 
         await jobApplicationRepository.AddAsync(jobApplication, cancellationToken);
