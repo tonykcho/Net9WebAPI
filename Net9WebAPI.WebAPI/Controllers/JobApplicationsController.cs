@@ -1,6 +1,8 @@
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
+using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.Application.ApiRequests.JobApplications;
+using Net9WebAPI.Application.Dtos;
 using Net9WebAPI.WebAPI.Pipelines;
 
 namespace Net9WebAPI.WebAPI.Controllers;
@@ -11,7 +13,7 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
 {
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetJobApplicationsAsync(CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetJobApplications(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -23,7 +25,7 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetJobApplicationAsync([FromRoute] GetJobApplicationRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetJobApplication([FromRoute] GetJobApplicationRequest request, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -35,12 +37,20 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateJobApplicationAsync([FromBody] CreateJobApplicationRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateJobApplication([FromBody] CreateJobApplicationRequest request, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         var result = await apiRequestPipeline.Pipe(request, cancellationToken);
 
-        return CreateResponse(result);
+        switch (result)
+        {
+            case ApiContentResult<JobApplicationDto> contentResult:
+                JobApplicationDto jobApplicationDto = contentResult.GetTypedContent();
+                return CreatedAtAction(nameof(GetJobApplication), new { id = jobApplicationDto.Id }, jobApplicationDto);
+            default:
+                return CreateResponse(result);
+        }
+        
     }
 }

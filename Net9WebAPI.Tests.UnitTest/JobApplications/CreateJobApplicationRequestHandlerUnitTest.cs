@@ -1,5 +1,6 @@
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.Application.ApiRequests.JobApplications;
+using Net9WebAPI.Application.Dtos;
 using Net9WebAPI.DataAccess.Abstract;
 using Net9WebAPI.Domain.Models;
 using NSubstitute;
@@ -33,7 +34,7 @@ public class CreateJobApplicationRequestHandlerUnitTest
         var result = await handler.Handle(mockRequest, cancellationToken);
 
         // Assert
-        Assert.IsType<NoContentApiResult>(result);
+        Assert.IsType<ApiContentResult<JobApplicationDto>>(result);
         Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
     }
 }

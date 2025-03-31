@@ -9,6 +9,7 @@ public static class JobApplicationMapper
     {
         return new JobApplicationDto
         {
+            Id = jobApplication.Id,
             JobTitle = jobApplication.JobTitle,
             CompanyName = jobApplication.CompanyName,
             ApplicationStatus = jobApplication.ApplicationStatus,

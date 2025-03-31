@@ -1,33 +1,46 @@
 namespace Net9WebAPI.Application.Abstract;
 
-public class ApiContentResult<TResponse>(TResponse content) : IApiContentResult<TResponse>
+public abstract class ApiResultBase : IApiResult
 {
-    public TResponse GetContent()
+    public virtual object? GetContent()
+    {
+        return null;
+    }
+}
+
+public class ApiContentResult<TResponse>(TResponse content) : ApiResultBase
+{
+    public override object? GetContent()
+    {
+        return content;
+    }
+
+    public TResponse GetTypedContent()
     {
         return content;
     }
 }
 
-public class ValidationProblemApiResult<TResponse>(TResponse content) : IApiContentResult<TResponse>
+public class ValidationProblemApiResult<TResponse>(TResponse content) : ApiResultBase
 {
-    public TResponse GetContent()
+    public override object? GetContent()
     {
         return content;
     }
 }
 
-public sealed class InvalidRequestApiResult : IApiResult
+public sealed class InvalidRequestApiResult : ApiResultBase
 {
 }
 
-public sealed class NoContentApiResult : IApiResult
+public sealed class NoContentApiResult : ApiResultBase
 {
 }
 
-public sealed class ResourceNotFoundApiResult : IApiResult
+public sealed class ResourceNotFoundApiResult : ApiResultBase
 {
 }
 
-public sealed class ResourceAlreadyExistApiResult : IApiResult
+public sealed class ResourceAlreadyExistApiResult : ApiResultBase
 {
 }

@@ -1,5 +1,7 @@
 using FluentValidation;
 using Net9WebAPI.Application.Abstract;
+using Net9WebAPI.Application.Dtos;
+using Net9WebAPI.Application.Mappers;
 using Net9WebAPI.DataAccess.Abstract;
 using Net9WebAPI.Domain.Models;
 
@@ -51,6 +53,8 @@ public class CreateJobApplicationRequestHandler(IJobApplicationRepository jobApp
 
         await jobApplicationRepository.SaveChangesAsync(cancellationToken);
 
-        return new NoContentApiResult();
+        JobApplicationDto jobApplicationDto = JobApplicationMapper.From(jobApplication);
+
+        return new ApiContentResult<JobApplicationDto>(jobApplicationDto);
     }
 }

@@ -2,7 +2,9 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using Bogus;
 using Net9WebAPI.Application.ApiRequests.JobApplications;
+using Net9WebAPI.Application.Dtos;
 using Net9WebAPI.Domain.Models;
 
 namespace Net9WebAPI.Tests.FunctionalTest;
@@ -10,6 +12,11 @@ namespace Net9WebAPI.Tests.FunctionalTest;
 public class JobApplicationEndpointTests : IClassFixture<ApiTestFixture>
 {
     private readonly ApiTestFixture _fixture;
+    private readonly Faker<CreateJobApplicationRequest> _requestGenerator = new Faker<CreateJobApplicationRequest>()
+        .RuleFor(x => x.JobTitle, f => f.Name.JobTitle())
+        .RuleFor(x => x.CompanyName, f => f.Company.CompanyName())
+        .RuleFor(x => x.ApplicationStatus, f => f.PickRandom<JobApplicationStatus>())
+        .RuleFor(x => x.ApplicationDate, f => f.Date.RecentOffset());
     public JobApplicationEndpointTests(ApiTestFixture fixture)
     {
         _fixture = fixture;
@@ -19,23 +26,18 @@ public class JobApplicationEndpointTests : IClassFixture<ApiTestFixture>
     public async Task CreateJobApplication_WithValidInput_ReturnOKResponse()
     {
         // Arrange
-        var request = new CreateJobApplicationRequest
-        {
-            JobTitle = "Software Developer",
-            CompanyName = "Net9",
-            ApplicationStatus = JobApplicationStatus.Applied,
-            ApplicationDate = DateTimeOffset.UtcNow
-        };
-
-        var requestJson = JsonSerializer.Serialize(request);
-        var content = new StringContent(requestJson, Encoding.UTF8, "application/json");
+        var request = _requestGenerator.Generate();
 
         // Act
-        var result = await _fixture.Client.PostAsync("/api/JobApplications", content);
+        var result = await _fixture.Client.PostAsJsonAsync("/api/JobApplications", request);
+        var content = await result.Content.ReadFromJsonAsync<JobApplicationDto>();
 
         // Assert
         result.EnsureSuccessStatusCode();
-        Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, result.StatusCode);
+
+        Assert.NotNull(content);
+        Assert.Equal(request.JobTitle, content.JobTitle);
         Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
     }
 
