@@ -19,7 +19,13 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
 
         var result = await apiRequestPipeline.Pipe(new GetJobApplicationsRequest(), cancellationToken);
 
-        return CreateResponse(result);
+        if (result is ApiContentResult<IList<JobApplicationDto>> contentResult)
+        {
+            IList<JobApplicationDto> jobApplications = contentResult.GetContent();
+            return Ok(jobApplications);
+        }
+
+        return CreateErrorResponse(result);
     }
 
     [HttpGet("{id}")]
@@ -31,7 +37,13 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
 
         var result = await apiRequestPipeline.Pipe(request, cancellationToken);
 
-        return CreateResponse(result);
+        if (result is ApiContentResult<JobApplicationDto> contentResult)
+        {
+            JobApplicationDto jobApplicationDto = contentResult.GetContent();
+            return Ok(jobApplicationDto);
+        }
+
+        return CreateErrorResponse(result);
     }
 
     [HttpPost]
@@ -43,14 +55,12 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
 
         var result = await apiRequestPipeline.Pipe(request, cancellationToken);
 
-        switch (result)
+        if (result is ApiContentResult<JobApplicationDto> contentResult)
         {
-            case ApiContentResult<JobApplicationDto> contentResult:
-                JobApplicationDto jobApplicationDto = contentResult.GetTypedContent();
-                return CreatedAtAction(nameof(GetJobApplication), new { id = jobApplicationDto.Id }, jobApplicationDto);
-            default:
-                return CreateResponse(result);
+            JobApplicationDto jobApplicationDto = contentResult.GetContent();
+            return CreatedAtAction(nameof(GetJobApplication), new { id = jobApplicationDto.Id }, jobApplicationDto);
         }
-        
+
+        return CreateErrorResponse(result);
     }
 }

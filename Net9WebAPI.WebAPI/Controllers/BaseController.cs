@@ -8,17 +8,11 @@ namespace Net9WebAPI.WebAPI.Controllers;
 public abstract class BaseController : ControllerBase
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    public IActionResult CreateResponse(IApiResult result)
+    public IActionResult CreateErrorResponse(IApiResult result)
     {
-        if (result.GetType().IsGenericType && result.GetType().GetGenericTypeDefinition() == typeof(ApiContentResult<>))
+        if (result is ValidationProblemApiResult<ModelStateDictionary> validationProblemResult)
         {
-            var content = result.GetContent();
-            return Ok(content);    
-        }
-
-        if (result.GetType().IsGenericType && result.GetType().GetGenericTypeDefinition() == typeof(ValidationProblemApiResult<>))
-        {
-            ModelStateDictionary content = result.GetContent() as ModelStateDictionary ?? new ModelStateDictionary();
+            ModelStateDictionary content = validationProblemResult.GetContent();
             var validationProblemDetails = new ValidationProblemDetails(content);
 
             return ValidationProblem(validationProblemDetails);
@@ -27,7 +21,6 @@ public abstract class BaseController : ControllerBase
         return result switch
         {
             InvalidRequestApiResult => BadRequest(),
-            NoContentApiResult => NoContent(),
             ResourceNotFoundApiResult => NotFound(),
             ResourceAlreadyExistApiResult => BadRequest(),
             _ => StatusCode(StatusCodes.Status500InternalServerError)
