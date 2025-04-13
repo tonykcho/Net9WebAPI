@@ -14,6 +14,9 @@ builder.RegisterApiRepositories();
 builder.RegisterPipelines();
 builder.RegisterApiRequestHandlers();
 
+// Configure Aspire default services (HealthCheck, OpenTelemetry)
+builder.AddServiceDefaults();
+
 var app = builder.Build();
 
 await app.MigrateAsync();
@@ -23,6 +26,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi("/openapi/{documentName}/openapi.json");
 }
+
+// Configure Aspire default endpoints (HealthCheck)
+app.MapDefaultEndpoints();
 
 // Configure dotnet Middleware
 app.UseHttpLogging();

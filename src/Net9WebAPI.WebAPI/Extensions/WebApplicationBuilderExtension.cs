@@ -38,7 +38,8 @@ public static class WebApplicationBuilderExtension
 
     public static void ConfigurePostgreSql(this WebApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<Net9WebAPIDbContext>();
+        builder.AddNpgsqlDbContext<Net9WebAPIDbContext>(connectionName: "Net9WebAPI");
+        // builder.Services.AddDbContext<Net9WebAPIDbContext>();
     }
 
     public static void ConfigureFluentValidation(this WebApplicationBuilder builder)

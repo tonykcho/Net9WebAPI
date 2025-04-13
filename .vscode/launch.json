@@ -15,6 +15,12 @@
             "logging": {
                 "moduleLoad": false,
             }
+        },
+        {
+            "name": "Launch Aspire",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/aspire/Net9WebAPI.AppHost/Net9WebAPI.AppHost.csproj"
         }
     ]
 }
