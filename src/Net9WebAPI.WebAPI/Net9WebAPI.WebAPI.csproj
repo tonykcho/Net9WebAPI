@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Net9WebAPI.Application\Net9WebAPI.Application.csproj" />
-    <ProjectReference Include="..\Net9WebAPI.ServiceDefaults\Net9WebAPI.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,14 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Net9WebAPI.Domain.Abstract;
 
 namespace Net9WebAPI.DataAccess.DbContexts;
-public class Net9WebAPIDbContext : DbContext
+public class Net9WebAPIDbContext(IConfiguration configuration) : DbContext
 {
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-    // }
-    public Net9WebAPIDbContext(DbContextOptions<Net9WebAPIDbContext> options) : base(options)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
