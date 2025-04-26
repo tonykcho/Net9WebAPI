@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"label": "Build Solution",
+			"label": "Build_Solution",
 			"command": "dotnet",
 			"args": [
 				"build"
@@ -13,6 +13,26 @@
 				"isDefault": true
 			},
 			"problemMatcher": []
+		},
+		{
+			"label": "Setup_Services_With_Docker",
+			"type": "shell",
+			"command": "docker",
+			"args": [
+				"compose",
+				"-f",
+				"${workspaceFolder}/compose.development.yaml",
+				"up",
+				"-d",
+				"--no-recreate"
+			],
+		},
+		{
+			"label": "Build",
+			"dependsOn": [
+				"Build_Solution",
+				"Setup_Services_With_Docker"
+			]
 		},
 		{
 			"type": "shell",

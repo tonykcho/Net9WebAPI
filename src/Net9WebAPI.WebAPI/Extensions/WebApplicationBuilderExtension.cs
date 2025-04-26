@@ -63,6 +63,7 @@ public static class WebApplicationBuilderExtension
                     .AddRuntimeInstrumentation()
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
+                    .AddSqlClientInstrumentation()
                     .AddMeter("Net9WebAPIMeter")
                     .AddMeter("Microsoft.AspNetCore.Hosting")
                     .AddMeter("Microsoft.AspN>etCore.Server.Kestrel")
@@ -75,6 +76,7 @@ public static class WebApplicationBuilderExtension
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddEntityFrameworkCoreInstrumentation()
+                    .AddSqlClientInstrumentation()
                     .AddOtlpExporter(opt =>
                     {
                         var endpoint = builder.Configuration["OTLP:Endpoint"];

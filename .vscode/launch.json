@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/src/Net9WebAPI.WebAPI/bin/Debug/net9.0/Net9WebAPI.WebAPI.dll",
             "launchSettingsFilePath": "${workspaceFolder}/src/Net9WebAPI.WebAPI/Properties/launchSettings.json",
-            "preLaunchTask": "Build Solution",
+            "preLaunchTask": "Build",
             "cwd": "${workspaceFolder}/src/Net9WebAPI.WebAPI",
             "logging": {
                 "moduleLoad": false,
