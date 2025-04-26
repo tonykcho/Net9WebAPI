@@ -1,21 +1,9 @@
 services:
-  web-api:
-      build: .
-      ports:
-        - "8000:8000"
-        - "8001:8001"
-      depends_on:
-        postgres:
-          condition: service_started
-        prometheus:
-          condition: service_started
-        grafana:
-          condition: service_started
   postgres:
     image: postgres
     container_name: postgres_container
     ports:
-      - 5432
+      - 5432:5432
     volumes:
       - "./data:/var/lib/postgresql"
     environment:
@@ -25,9 +13,9 @@ services:
     image: prom/prometheus
     container_name: prometheus_container
     ports:
-      - 9090
+      - 9090:9090
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.development.yml:/etc/prometheus/prometheus.yml
   # jaeger:
   #   image: jaegertracing/all-in-one
   #   container_name: jaeger_container

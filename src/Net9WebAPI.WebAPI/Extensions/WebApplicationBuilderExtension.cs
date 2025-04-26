@@ -7,7 +7,10 @@ using Net9WebAPI.DataAccess.Abstract;
 using Net9WebAPI.DataAccess.DbContexts;
 using Net9WebAPI.DataAccess.Repositories;
 using Net9WebAPI.WebAPI.Pipelines;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
+using OpenTelemetry.Metrics;
 
 namespace Net9WebAPI.WebAPI.Extensions;
 
@@ -48,6 +51,40 @@ public static class WebApplicationBuilderExtension
             options.SuppressModelStateInvalidFilter = true;
         });
         builder.Services.AddValidatorsFromAssembly(Assembly.Load(ApplicationAssemblyName));
+    }
+
+    public static void ConfigureOpentelemetry(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddOpenTelemetry()
+            .WithMetrics(options =>
+            {
+                options
+                    .AddProcessInstrumentation()
+                    .AddRuntimeInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddMeter("Net9WebAPIMeter")
+                    .AddMeter("Microsoft.AspNetCore.Hosting")
+                    .AddMeter("Microsoft.AspN>etCore.Server.Kestrel")
+                    .AddPrometheusExporter();
+            })
+            .WithTracing(tracerProviderBuilder =>
+            {
+                tracerProviderBuilder
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName))
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation()
+                    .AddOtlpExporter(opt =>
+                    {
+                        var endpoint = builder.Configuration["OTLP:Endpoint"];
+                        if (string.IsNullOrEmpty(endpoint))
+                        {
+                            throw new InvalidOperationException("OTLP:Endpoint configuration is missing or empty.");
+                        }
+                        opt.Endpoint = new Uri(endpoint);
+                    });
+            });
     }
 
     public static void RegisterApiRepositories(this WebApplicationBuilder builder)

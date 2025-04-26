@@ -1,14 +1,15 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 8000
+EXPOSE 8001
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY Net9WebAPI.sln .
-COPY ["Net9WebAPI.WebAPI", "Net9WebAPI.WebAPI/"]
-COPY ["Net9WebAPI.Application", "Net9WebAPI.Application/"]
-COPY ["Net9WebAPI.DataAccess", "Net9WebAPI.DataAccess/"]
-COPY ["Net9WebAPI.Domain", "Net9WebAPI.Domain/"]
+COPY ["src/Net9WebAPI.WebAPI", "Net9WebAPI.WebAPI/"]
+COPY ["src/Net9WebAPI.Application", "Net9WebAPI.Application/"]
+COPY ["src/Net9WebAPI.DataAccess", "Net9WebAPI.DataAccess/"]
+COPY ["src/Net9WebAPI.Domain", "Net9WebAPI.Domain/"]
 
 RUN dotnet restore "Net9WebAPI.WebAPI/Net9WebAPI.WebAPI.csproj"
 WORKDIR "/src/Net9WebAPI.WebAPI/"

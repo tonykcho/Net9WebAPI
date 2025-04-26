@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.ConfigureLogging();
 builder.ConfigurePostgreSql();
 builder.ConfigureFluentValidation();
+builder.ConfigureOpentelemetry();
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
@@ -17,6 +18,8 @@ builder.RegisterApiRequestHandlers();
 var app = builder.Build();
 
 await app.MigrateAsync();
+
+app.MapPrometheusScrapingEndpoint();
 
 app.MapControllers();
 if (app.Environment.IsDevelopment())

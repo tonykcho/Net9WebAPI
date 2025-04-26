@@ -2,6 +2,8 @@
     "cSpell.words": [
         "appsettings",
         "Dtos",
-        "Npgsql"
+        "jaegertracing",
+        "Npgsql",
+        "Serilog"
     ]
 }
