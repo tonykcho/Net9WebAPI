@@ -30,23 +30,17 @@ public class LoginRequest : IApiRequest
 public class LoginRequestHandler : IApiRequestHandler<LoginRequest>
 {
     private readonly IConfiguration _configuration;
-    private readonly IValidator<LoginRequest> _validator;
 
     public LoginRequestHandler(IValidator<LoginRequest> validator, IConfiguration configuration)
     {
         _configuration = configuration;
-        _validator = validator;
     }
 
     public async Task<IApiResult> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            return new ValidationProblemApiResult(validationResult);
-        }
+        await Task.Delay(10);
 
         var claims = new List<Claim>
         {
