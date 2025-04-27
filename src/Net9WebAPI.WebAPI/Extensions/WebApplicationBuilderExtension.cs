@@ -2,7 +2,6 @@ using System.Reflection;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Net9WebAPI.Application.Abstract;
-using Net9WebAPI.DataAccess.Abstract;
 using Net9WebAPI.DataAccess.DbContexts;
 using Net9WebAPI.DataAccess.Repositories;
 using Net9WebAPI.WebAPI.Pipelines;
@@ -12,6 +11,7 @@ using OpenTelemetry.Metrics;
 using Serilog;
 using Serilog.Sinks.Grafana.Loki;
 using Microsoft.AspNetCore.HttpLogging;
+using Net9WebAPI.Domain.Abstract;
 
 namespace Net9WebAPI.WebAPI.Extensions;
 

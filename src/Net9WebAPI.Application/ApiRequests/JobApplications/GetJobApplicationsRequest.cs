@@ -1,8 +1,9 @@
+using System.Transactions;
 using Microsoft.Extensions.Logging;
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.Application.Dtos;
 using Net9WebAPI.Application.Mappers;
-using Net9WebAPI.DataAccess.Abstract;
+using Net9WebAPI.Domain.Abstract;
 
 namespace Net9WebAPI.Application.ApiRequests.JobApplications;
 
@@ -25,14 +26,31 @@ public class GetJobApplicationsRequestHandler : IApiRequestHandler<GetJobApplica
 
     public async Task<IApiResult> Handle(GetJobApplicationsRequest request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("GetJobApplicationsRequestHandler started");
+        IApiResult apiResult;
 
-        var JobApplications = await jobApplicationRepository.ListAsync(cancellationToken);
+        try
+        {
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                logger.LogInformation("GetJobApplicationsRequestHandler started");
 
-        logger.LogInformation("There are {Count} job applications", JobApplications.Count);
+                var JobApplications = await jobApplicationRepository.ListAsync(cancellationToken);
 
-        IList<JobApplicationDto> jobApplicationDtos = JobApplications.Select(JobApplicationMapper.From).ToList();
+                logger.LogInformation("There are {Count} job applications", JobApplications.Count);
 
-        return new ApiContentResult<IList<JobApplicationDto>>(jobApplicationDtos);
+                IList<JobApplicationDto> jobApplicationDtos = JobApplications.Select(JobApplicationMapper.From).ToList();
+
+                apiResult = new ApiContentResult<IList<JobApplicationDto>>(jobApplicationDtos);
+
+                scope.Complete();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Transaction failed: " + ex.Message);
+            throw;
+        }
+
+        return apiResult;
     }
 }

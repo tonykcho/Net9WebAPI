@@ -18,7 +18,7 @@ public static class WebApplicationExtensions
                 logger.LogInformation("--> Start migrating database.");
 
                 await context.Database.MigrateAsync(cancellationToken);
-                
+
                 logger.LogInformation("--> Migrate database success.");
             }
             catch (Exception exception)
@@ -27,5 +27,5 @@ public static class WebApplicationExtensions
                 throw;
             }
         }
-    } 
+    }
 }

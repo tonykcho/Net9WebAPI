@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Net9WebAPI.DataAccess.Abstract;
 using Net9WebAPI.DataAccess.DbContexts;
 using Net9WebAPI.Domain.Abstract;
 

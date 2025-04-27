@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Net9WebAPI.DataAccess\Net9WebAPI.DataAccess.csproj" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <ProjectReference Include="..\Net9WebAPI.Domain\Net9WebAPI.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
