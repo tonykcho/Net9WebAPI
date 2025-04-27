@@ -1,6 +1,5 @@
 using System.Reflection;
 using FluentValidation;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.DataAccess.Abstract;
@@ -9,8 +8,10 @@ using Net9WebAPI.DataAccess.Repositories;
 using Net9WebAPI.WebAPI.Pipelines;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Serilog;
 using OpenTelemetry.Metrics;
+using Serilog;
+using Serilog.Sinks.Grafana.Loki;
+using Microsoft.AspNetCore.HttpLogging;
 
 namespace Net9WebAPI.WebAPI.Extensions;
 
@@ -20,9 +21,16 @@ public static class WebApplicationBuilderExtension
     const string ApplicationAssemblyName = "Net9WebAPI.Application";
     public static void ConfigureLogging(this WebApplicationBuilder builder)
     {
+        var labels = new List<LokiLabel>
+        {
+            new LokiLabel { Key = "app", Value = builder.Environment.ApplicationName },
+            new LokiLabel { Key = "env", Value = builder.Environment.EnvironmentName }
+        };
+
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .WriteTo.Console()
+            .WriteTo.GrafanaLoki(builder.Configuration["Loki:Endpoint"]!, labels)
             .CreateLogger();
 
         builder.Host.UseSerilog();

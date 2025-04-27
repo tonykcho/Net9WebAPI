@@ -36,7 +36,7 @@ public abstract class BaseRepository<T>(Net9WebAPIDbContext dbContext) : IBaseRe
         return await dbContext.Set<T>().SingleOrDefaultAsync(data => data.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<T>> ListAsync(CancellationToken cancellationToken)
+    public async Task<IList<T>> ListAsync(CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
