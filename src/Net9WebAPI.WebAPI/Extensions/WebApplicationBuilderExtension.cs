@@ -12,6 +12,9 @@ using Serilog;
 using Serilog.Sinks.Grafana.Loki;
 using Microsoft.AspNetCore.HttpLogging;
 using Net9WebAPI.Domain.Abstract;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Net9WebAPI.WebAPI.Extensions;
 
@@ -116,5 +119,29 @@ public static class WebApplicationBuilderExtension
                 builder.Services.AddTransient(iface, type);
             }
         }
+    }
+
+    public static void ConfigureAuthentication(this WebApplicationBuilder builder)
+    {
+        string secretKey = builder.Configuration["JwtBearerSecretKey"] ?? "default_secret_key";
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = "localhost:8001";
+                options.Audience = "localhost:8001";
+
+                options.MapInboundClaims = false;
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = "localhost:8001",
+                    ValidateAudience = true,
+                    ValidAudience = "localhost:8001",
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                };
+            });
     }
 }

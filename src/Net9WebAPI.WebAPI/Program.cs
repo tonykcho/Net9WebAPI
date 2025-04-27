@@ -6,6 +6,7 @@ builder.ConfigureLogging();
 builder.ConfigurePostgreSql();
 builder.ConfigureFluentValidation();
 builder.ConfigureOpentelemetry();
+builder.ConfigureAuthentication();
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
@@ -20,6 +21,7 @@ var app = builder.Build();
 await app.MigrateAsync();
 
 app.MapPrometheusScrapingEndpoint();
+app.UseAuthentication();
 
 app.MapControllers();
 if (app.Environment.IsDevelopment())
@@ -27,7 +29,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi("/openapi/{documentName}/openapi.json");
 }
 
-// Configure dotnet Middleware
 app.UseHttpLogging();
 app.UseHttpsRedirection();
 
