@@ -9,8 +9,8 @@ namespace Net9WebAPI.Domain.Models
         Offered,
         Rejected
     }
-    
-    public class JobApplication : BaseModel, IAggregateRoot
+
+    public class JobApplication : BaseModel
     {
         public required string JobTitle { get; set; }
         public required string CompanyName { get; set; }
