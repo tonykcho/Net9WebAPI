@@ -47,6 +47,7 @@ public static class WebApplicationBuilderExtension
                 | HttpLoggingFields.ResponseBody;
             logging.RequestBodyLogLimit = 4096;
             logging.ResponseBodyLogLimit = 4096;
+            logging.CombineLogs = true;
         });
     }
 
@@ -127,17 +128,15 @@ public static class WebApplicationBuilderExtension
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.Authority = "localhost:8001";
-                options.Audience = "localhost:8001";
-
                 options.MapInboundClaims = false;
+                options.RequireHttpsMetadata = false;
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "localhost:8001",
+                    ValidIssuer = "https://localhost:8001",
                     ValidateAudience = true,
-                    ValidAudience = "localhost:8001",
+                    ValidAudience = "Net9WebApi",
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))

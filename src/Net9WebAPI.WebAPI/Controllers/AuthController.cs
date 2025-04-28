@@ -17,9 +17,9 @@ public class AuthController(ApiRequestPipeline apiRequestPipeline) : BaseControl
 
         var result = await apiRequestPipeline.Pipe(request, cancellationToken);
 
-        if (result is NoContentApiResult)
+        if (result is ApiContentResult<LoginResultDto> contentResult)
         {
-            return NoContent();
+            return Ok(contentResult.GetContent());
         }
 
         return CreateErrorResponse(result);

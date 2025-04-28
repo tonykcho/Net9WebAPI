@@ -1,4 +1,5 @@
 using System.Threading;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.Application.ApiRequests.JobApplications;

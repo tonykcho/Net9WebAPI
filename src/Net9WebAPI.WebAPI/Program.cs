@@ -1,4 +1,6 @@
 using Net9WebAPI.WebAPI.Extensions;
+using Net9WebAPI.WebAPI.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.ConfigureAuthentication();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
 builder.RegisterApiRepositories();
 builder.RegisterPipelines();
@@ -27,8 +30,11 @@ app.MapControllers();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi("/openapi/{documentName}/openapi.json");
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
+app.UseMiddleware<HttpStatusCodeLoggingMiddleware>();
 app.UseHttpLogging();
 app.UseHttpsRedirection();
 

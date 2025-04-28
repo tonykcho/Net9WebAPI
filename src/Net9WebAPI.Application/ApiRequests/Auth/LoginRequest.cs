@@ -1,6 +1,5 @@
 using FluentValidation;
 using Net9WebAPI.Application.Abstract;
-using FluentValidation.Results;
 using System.Security.Claims;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
@@ -31,7 +30,7 @@ public class LoginRequestHandler : IApiRequestHandler<LoginRequest>
 {
     private readonly IConfiguration _configuration;
 
-    public LoginRequestHandler(IValidator<LoginRequest> validator, IConfiguration configuration)
+    public LoginRequestHandler(IConfiguration configuration)
     {
         _configuration = configuration;
     }
@@ -54,8 +53,8 @@ public class LoginRequestHandler : IApiRequestHandler<LoginRequest>
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: "yourIssuer",
-            audience: "yourAudience",
+            issuer: "https://localhost:8001",
+            audience: "Net9WebApi",
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(30),
             signingCredentials: creds
@@ -63,11 +62,11 @@ public class LoginRequestHandler : IApiRequestHandler<LoginRequest>
 
         string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-        LoginResponseDto dto = new LoginResponseDto()
+        LoginResultDto dto = new LoginResultDto()
         {
             Token = tokenString
         };
 
-        return new ApiContentResult<LoginResponseDto>(dto);
+        return new ApiContentResult<LoginResultDto>(dto);
     }
 }
