@@ -1,6 +1,6 @@
+using Microsoft.OpenApi.Models;
 using Net9WebAPI.WebAPI.Extensions;
 using Net9WebAPI.WebAPI.Middlewares;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +9,12 @@ builder.ConfigurePostgreSql();
 builder.ConfigureFluentValidation();
 builder.ConfigureOpentelemetry();
 builder.ConfigureAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddOpenApi();
-builder.Services.AddSwaggerGen();
+builder.ConfigureSwagger();
 
 builder.RegisterApiRepositories();
 builder.RegisterPipelines();
@@ -25,6 +26,7 @@ await app.MigrateAsync();
 
 app.MapPrometheusScrapingEndpoint();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 if (app.Environment.IsDevelopment())
