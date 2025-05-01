@@ -8,7 +8,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Net9WebAPI.Domain\Net9WebAPI.Domain.csproj" />
+    <ProjectReference Include="..\Net9WebAPI.DataAccess\Net9WebAPI.DataAccess.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

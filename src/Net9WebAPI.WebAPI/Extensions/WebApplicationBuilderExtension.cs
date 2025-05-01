@@ -3,7 +3,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.DataAccess.DbContexts;
-using Net9WebAPI.DataAccess.Repositories;
 using Net9WebAPI.WebAPI.Pipelines;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -11,7 +10,6 @@ using OpenTelemetry.Metrics;
 using Serilog;
 using Serilog.Sinks.Grafana.Loki;
 using Microsoft.AspNetCore.HttpLogging;
-using Net9WebAPI.Domain.Abstract;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -100,11 +98,6 @@ public static class WebApplicationBuilderExtension
                         opt.Endpoint = new Uri(endpoint);
                     });
             });
-    }
-
-    public static void RegisterApiRepositories(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
     }
 
     public static void RegisterPipelines(this WebApplicationBuilder builder)

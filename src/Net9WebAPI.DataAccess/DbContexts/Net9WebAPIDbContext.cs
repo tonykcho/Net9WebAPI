@@ -1,13 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Net9WebAPI.Domain.Abstract;
+using Net9WebAPI.Domain.Models;
 
 namespace Net9WebAPI.DataAccess.DbContexts;
-public class Net9WebAPIDbContext(IConfiguration configuration) : DbContext
+public class Net9WebAPIDbContext : DbContext
 {
+    public Net9WebAPIDbContext()
+    {
+    }
+
+    public Net9WebAPIDbContext(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+    public virtual DbSet<JobApplication> JobApplications { get; set; }
+    private readonly IConfiguration? _configuration;
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+        optionsBuilder.UseNpgsql(_configuration?.GetConnectionString("DefaultConnection"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

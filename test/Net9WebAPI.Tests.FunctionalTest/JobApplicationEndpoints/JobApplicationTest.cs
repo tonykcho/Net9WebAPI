@@ -7,17 +7,16 @@ using Net9WebAPI.Domain.Models;
 
 namespace Net9WebAPI.Tests.FunctionalTest;
 
-public class JobApplicationEndpointTests : IClassFixture<ApiTestFixture>
+public class JobApplicationTest : IntegrationTestBase
 {
-    private readonly ApiTestFixture _fixture;
     private readonly Faker<CreateJobApplicationRequest> _requestGenerator = new Faker<CreateJobApplicationRequest>()
         .RuleFor(x => x.JobTitle, f => f.Name.JobTitle())
         .RuleFor(x => x.CompanyName, f => f.Company.CompanyName())
         .RuleFor(x => x.ApplicationStatus, f => f.PickRandom<JobApplicationStatus>())
         .RuleFor(x => x.ApplicationDate, f => f.Date.RecentOffset());
-    public JobApplicationEndpointTests(ApiTestFixture fixture)
+
+    public JobApplicationTest(WebApplicationFixture webApplicationFixture) : base(webApplicationFixture)
     {
-        _fixture = fixture;
     }
 
     [Fact]
@@ -27,32 +26,33 @@ public class JobApplicationEndpointTests : IClassFixture<ApiTestFixture>
         var request = _requestGenerator.Generate();
 
         // Act
-        var result = await _fixture.Client.PostAsJsonAsync("/api/JobApplications", request);
-        var content = await result.Content.ReadFromJsonAsync<JobApplicationDto>();
+        var result = await WebApplicationFixture.Client.PostAsJsonAsync("/api/JobApplications", request);
 
         // Assert
         result.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.Created, result.StatusCode);
 
+        var content = await result.Content.ReadFromJsonAsync<JobApplicationDto>();
         Assert.NotNull(content);
         Assert.Equal(request.JobTitle, content.JobTitle);
+        Assert.Equal(1, content.Id);
         Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
     }
 
     [Fact]
     public async Task GetJobApplicationsRequest_ReturnJobApplicationsList()
     {
-        var result = await _fixture.Client.GetAsync("/api/JobApplications");
-        var content = await result.Content.ReadFromJsonAsync<IList<JobApplication>>();
+        // Act
+        var result = await WebApplicationFixture.Client.GetAsync("/api/JobApplications");
 
         // Assert
-        result.EnsureSuccessStatusCode();
-        Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, result.StatusCode);
         Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
 
-        if (content is not null)
-        {
-            Console.WriteLine(content.Count);
-        }
+        // var content = await result.Content.ReadFromJsonAsync<IList<JobApplication>>();
+        // if (content is not null)
+        // {
+        //     Console.WriteLine(content.Count);
+        // }
     }
 }

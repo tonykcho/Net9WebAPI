@@ -16,7 +16,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddOpenApi();
 builder.ConfigureSwagger();
 
-builder.RegisterApiRepositories();
 builder.RegisterPipelines();
 builder.RegisterApiRequestHandlers();
 

@@ -2,6 +2,7 @@ using FluentValidation;
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.Application.Dtos;
 using Net9WebAPI.Application.Mappers;
+using Net9WebAPI.DataAccess.DbContexts;
 using Net9WebAPI.Domain.Abstract;
 using Net9WebAPI.Domain.Models;
 
@@ -37,7 +38,7 @@ public class CreateJobApplicationRequest : IApiRequest
     }
 }
 
-public class CreateJobApplicationRequestHandler(IJobApplicationRepository jobApplicationRepository) : IApiRequestHandler<CreateJobApplicationRequest>
+public class CreateJobApplicationRequestHandler(Net9WebAPIDbContext dbContext) : IApiRequestHandler<CreateJobApplicationRequest>
 {
     public async Task<IApiResult> Handle(CreateJobApplicationRequest request, CancellationToken cancellationToken)
     {
@@ -49,9 +50,9 @@ public class CreateJobApplicationRequestHandler(IJobApplicationRepository jobApp
             ApplicationDate = request.ApplicationDate.ToUniversalTime()
         };
 
-        await jobApplicationRepository.AddAsync(jobApplication, cancellationToken);
+        await dbContext.JobApplications.AddAsync(jobApplication, cancellationToken);
 
-        await jobApplicationRepository.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         JobApplicationDto jobApplicationDto = JobApplicationMapper.From(jobApplication);
 
