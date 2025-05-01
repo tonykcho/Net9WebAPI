@@ -1,3 +1,4 @@
+using Bogus;
 using Microsoft.EntityFrameworkCore;
 using Net9WebAPI.DataAccess.DbContexts;
 using Net9WebAPI.Domain.Models;
@@ -12,10 +13,26 @@ public abstract class UnitTestBase
     }
 
     public Net9WebAPIDbContext MockDbContext { get; set; }
+    private readonly Faker<JobApplication> _jobApplicationGenerator = new Faker<JobApplication>()
+        .RuleFor(x => x.Id, f => f.IndexFaker)
+        .RuleFor(x => x.Guid, f => Guid.NewGuid())
+        .RuleFor(x => x.CreatedAt, f => f.Date.RecentOffset())
+        .RuleFor(x => x.LastUpdatedAt, f => f.Date.RecentOffset())
+        .RuleFor(x => x.JobTitle, f => f.Name.JobTitle())
+        .RuleFor(x => x.CompanyName, f => f.Company.CompanyName())
+        .RuleFor(x => x.ApplicationStatus, f => f.PickRandom<JobApplicationStatus>())
+        .RuleFor(x => x.ApplicationDate, f => f.Date.RecentOffset());
 
     private void PopulateJobApplicationDbSet()
     {
-        List<JobApplication> jobApplications = new List<JobApplication>();
+        List<JobApplication> jobApplications =
+        [
+            _jobApplicationGenerator.Generate(),
+            _jobApplicationGenerator.Generate(),
+            _jobApplicationGenerator.Generate(),
+            _jobApplicationGenerator.Generate(),
+            _jobApplicationGenerator.Generate(),
+        ];
 
         var mockDbSet = CreateMockDbSet(jobApplications);
         MockDbContext.JobApplications.Returns(mockDbSet);
