@@ -1,6 +1,4 @@
-using Net9WebAPI.Domain.Abstract;
-
-namespace Net9WebAPI.Domain.Models
+namespace Net9WebAPI.DataAccess.DataModels
 {
     public enum JobApplicationStatus
     {
@@ -10,7 +8,7 @@ namespace Net9WebAPI.Domain.Models
         Rejected
     }
 
-    public class JobApplication : BaseModel
+    public class JobApplication : EntityBase
     {
         public required string JobTitle { get; set; }
         public required string CompanyName { get; set; }

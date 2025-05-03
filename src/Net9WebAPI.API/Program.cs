@@ -1,6 +1,6 @@
 using Microsoft.OpenApi.Models;
-using Net9WebAPI.WebAPI.Extensions;
-using Net9WebAPI.WebAPI.Middlewares;
+using Net9WebAPI.API.Extensions;
+using Net9WebAPI.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 

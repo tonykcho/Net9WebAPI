@@ -8,10 +8,10 @@
             "name": "Launch WebAPI",
             "type": "coreclr",
             "request": "launch",
-            "program": "${workspaceFolder}/src/Net9WebAPI.WebAPI/bin/Debug/net9.0/Net9WebAPI.WebAPI.dll",
-            "launchSettingsFilePath": "${workspaceFolder}/src/Net9WebAPI.WebAPI/Properties/launchSettings.json",
+            "program": "${workspaceFolder}/src/Net9WebAPI.API/bin/Debug/net9.0/Net9WebAPI.API.dll",
+            "launchSettingsFilePath": "${workspaceFolder}/src/Net9WebAPI.API/Properties/launchSettings.json",
             "preLaunchTask": "Build",
-            "cwd": "${workspaceFolder}/src/Net9WebAPI.WebAPI",
+            "cwd": "${workspaceFolder}/src/Net9WebAPI.API",
             "logging": {
                 "moduleLoad": false,
             }

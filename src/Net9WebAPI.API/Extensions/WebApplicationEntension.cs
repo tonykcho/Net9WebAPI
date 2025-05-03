@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Net9WebAPI.DataAccess.DbContexts;
 
-namespace Net9WebAPI.WebAPI.Extensions;
+namespace Net9WebAPI.API.Extensions;
 
 public static class WebApplicationExtensions
 {

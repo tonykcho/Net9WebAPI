@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Net9WebAPI.Application.Abstract;
-using Net9WebAPI.Domain.Abstract;
-using Serilog;
-using Serilog.Core;
 
-namespace Net9WebAPI.WebAPI.Controllers;
+namespace Net9WebAPI.API.Controllers;
 
 public abstract class BaseController : ControllerBase
 {

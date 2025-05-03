@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Net9WebAPI.WebAPI\Net9WebAPI.WebAPI.csproj" />
+    <ProjectReference Include="..\..\src\Net9WebAPI.API\Net9WebAPI.API.csproj" />
   </ItemGroup>
 
 </Project>

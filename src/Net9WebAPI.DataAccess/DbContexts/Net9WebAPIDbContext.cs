@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Net9WebAPI.Domain.Abstract;
-using Net9WebAPI.Domain.Models;
+using Net9WebAPI.DataAccess.DataModels;
 
 namespace Net9WebAPI.DataAccess.DbContexts;
 public class Net9WebAPIDbContext : DbContext
@@ -33,7 +32,7 @@ public class Net9WebAPIDbContext : DbContext
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        foreach (var entry in ChangeTracker.Entries<BaseModel>())
+        foreach (var entry in ChangeTracker.Entries<EntityBase>())
         {
             switch (entry.State)
             {

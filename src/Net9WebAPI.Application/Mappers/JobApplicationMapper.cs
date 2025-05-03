@@ -1,5 +1,5 @@
 using Net9WebAPI.Application.Dtos;
-using Net9WebAPI.Domain.Models;
+using Net9WebAPI.DataAccess.DataModels;
 
 namespace Net9WebAPI.Application.Mappers;
 

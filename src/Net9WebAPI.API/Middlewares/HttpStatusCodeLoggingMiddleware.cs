@@ -1,4 +1,4 @@
-namespace Net9WebAPI.WebAPI.Middlewares;
+namespace Net9WebAPI.API.Middlewares;
 
 public class HttpStatusCodeLoggingMiddleware
 {

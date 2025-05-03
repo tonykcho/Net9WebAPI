@@ -5,7 +5,6 @@ using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.Application.Dtos;
 using Net9WebAPI.Application.Mappers;
 using Net9WebAPI.DataAccess.DbContexts;
-using Net9WebAPI.Domain.Abstract;
 
 namespace Net9WebAPI.Application.ApiRequests.JobApplications;
 

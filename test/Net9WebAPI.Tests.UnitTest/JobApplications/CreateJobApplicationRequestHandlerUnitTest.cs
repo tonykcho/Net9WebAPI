@@ -2,9 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.Application.ApiRequests.JobApplications;
 using Net9WebAPI.Application.Dtos;
+using Net9WebAPI.DataAccess.DataModels;
 using Net9WebAPI.DataAccess.DbContexts;
-using Net9WebAPI.Domain.Abstract;
-using Net9WebAPI.Domain.Models;
 using NSubstitute;
 
 namespace Net9WebAPI.Tests.UnitTest.JobApplications;

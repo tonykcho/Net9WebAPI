@@ -2,7 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Net9WebAPI.Application.Abstract;
 
-namespace Net9WebAPI.WebAPI.Pipelines;
+namespace Net9WebAPI.API.Pipelines;
 
 public class ApiRequestPipeline(IServiceProvider serviceProvider)
 {

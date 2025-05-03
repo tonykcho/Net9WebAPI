@@ -1,5 +1,5 @@
-namespace Net9WebAPI.Domain.Abstract;
-public abstract class BaseModel
+namespace Net9WebAPI.DataAccess.DataModels;
+public abstract class EntityBase
 {
     public int Id { get; set; }
     public Guid Guid { get; set; }

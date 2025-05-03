@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.DataAccess.DbContexts;
-using Net9WebAPI.WebAPI.Pipelines;
+using Net9WebAPI.API.Pipelines;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
@@ -15,7 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 
-namespace Net9WebAPI.WebAPI.Extensions;
+namespace Net9WebAPI.API.Extensions;
 
 
 public static class WebApplicationBuilderExtension

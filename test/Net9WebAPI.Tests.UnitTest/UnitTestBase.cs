@@ -1,7 +1,7 @@
 using Bogus;
 using Microsoft.EntityFrameworkCore;
+using Net9WebAPI.DataAccess.DataModels;
 using Net9WebAPI.DataAccess.DbContexts;
-using Net9WebAPI.Domain.Models;
 using NSubstitute;
 
 public abstract class UnitTestBase

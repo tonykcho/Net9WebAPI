@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Net9WebAPI.Application.Abstract;
 using Net9WebAPI.Application.ApiRequests.JobApplications;
 using Net9WebAPI.Application.Dtos;
-using Net9WebAPI.WebAPI.Pipelines;
+using Net9WebAPI.API.Pipelines;
 
-namespace Net9WebAPI.WebAPI.Controllers;
+namespace Net9WebAPI.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Net9WebAPI.Domain.Models;
+using Net9WebAPI.DataAccess.DataModels;
 
 namespace Net9WebAPI.DataAccess.ModelConfigurations;
 public class JobApplicationConfiguration : IEntityTypeConfiguration<JobApplication>

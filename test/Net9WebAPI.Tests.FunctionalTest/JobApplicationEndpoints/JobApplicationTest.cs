@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using Bogus;
 using Net9WebAPI.Application.ApiRequests.JobApplications;
 using Net9WebAPI.Application.Dtos;
-using Net9WebAPI.Domain.Models;
+using Net9WebAPI.DataAccess.DataModels;
 
 namespace Net9WebAPI.Tests.FunctionalTest;
 
