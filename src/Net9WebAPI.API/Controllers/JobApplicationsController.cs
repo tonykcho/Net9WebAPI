@@ -13,7 +13,6 @@ namespace Net9WebAPI.API.Controllers;
 public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : BaseController
 {
     [HttpGet]
-    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetJobApplications(CancellationToken cancellationToken = default)
     {

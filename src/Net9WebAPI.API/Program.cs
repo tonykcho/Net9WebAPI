@@ -19,9 +19,24 @@ builder.ConfigureSwagger();
 builder.RegisterPipelines();
 builder.RegisterApiRequestHandlers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:8080")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
+
 var app = builder.Build();
 
-await app.MigrateAsync();
+if (app.Environment.IsDevelopment())
+{
+    await app.MigrateAsync();
+}
 
 app.MapPrometheusScrapingEndpoint();
 app.UseAuthentication();
@@ -37,7 +52,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<HttpStatusCodeLoggingMiddleware>();
 app.UseHttpLogging();
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+app.UseCors();
 
 app.Run();
 

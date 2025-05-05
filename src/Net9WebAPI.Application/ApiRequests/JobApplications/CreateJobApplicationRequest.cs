@@ -33,6 +33,10 @@ public class CreateJobApplicationRequest : IApiRequest
             RuleFor(request => request.ApplicationDate)
                 .NotEqual(default(DateTimeOffset))
                 .WithMessage("Application date is required.");
+
+            RuleFor(request => request.ApplicationDate)
+                .LessThanOrEqualTo(DateTimeOffset.UtcNow)
+                .WithMessage("Application date cannot be in the future.");
         }
     }
 }

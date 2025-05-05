@@ -20,20 +20,18 @@ public class GetJobApplicationsRequestHandler(Net9WebAPIDbContext dbContext, ILo
 
         try
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                logger.LogInformation("GetJobApplicationsRequestHandler started");
+            // using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            logger.LogInformation("GetJobApplicationsRequestHandler started");
 
-                var JobApplications = await dbContext.JobApplications.ToListAsync(cancellationToken);
+            var JobApplications = await dbContext.JobApplications
+                .OrderByDescending(jobApplication => jobApplication.CreatedAt)
+                .ToListAsync(cancellationToken);
 
-                logger.LogInformation("There are {Count} job applications", JobApplications.Count);
+            logger.LogInformation("There are {Count} job applications", JobApplications.Count);
 
-                IList<JobApplicationDto> jobApplicationDtos = JobApplications.Select(JobApplicationMapper.From).ToList();
+            IList<JobApplicationDto> jobApplicationDtos = JobApplications.Select(JobApplicationMapper.From).ToList();
 
-                apiResult = new ApiContentResult<IList<JobApplicationDto>>(jobApplicationDtos);
-
-                scope.Complete();
-            }
+            apiResult = new ApiContentResult<IList<JobApplicationDto>>(jobApplicationDtos);
         }
         catch (Exception ex)
         {

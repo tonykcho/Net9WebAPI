@@ -9,6 +9,10 @@ public class ApiRequestPipeline(IServiceProvider serviceProvider)
     public async Task<IApiResult> Pipe<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IApiRequest
     {
         // Insert any pre request execution behavior here
+        if (request is null)
+        {
+            return new InvalidRequestApiResult();
+        }
 
         // Fluent Validation
         var validator = serviceProvider.GetService<IValidator<TRequest>>();
