@@ -16,24 +16,51 @@ services:
       - 9090:9090
     volumes:
       - ./prometheus.development.yml:/etc/prometheus/prometheus.yml
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`traefik.prometheus.localhost`)"
   jaeger:
     image: jaegertracing/all-in-one
     container_name: jaeger_container
     ports:
       - 4317:4317
       - 4318:4318
-      - 16686:16686
+      - 16686
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jaeger.rule=Host(`traefik.jaeger.localhost`)"
+      - "traefik.http.services.jaeger.loadbalancer.server.port=16686"
   grafana:
     image: grafana/grafana
     container_name: grafana_container
     ports:
-      - 3000:3000
+      - 3000
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`traefik.grafana.localhost`)"
   loki:
     image: grafana/loki
     container_name: loki_container
     ports:
       - 3100:3100
     command: -config.file=/etc/loki/local-config.yaml
+  traefik:
+    image: traefik
+    container_name: traefik_container
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"

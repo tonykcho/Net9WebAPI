@@ -4,6 +4,7 @@
         "Dtos",
         "jaegertracing",
         "Npgsql",
-        "Serilog"
+        "Serilog",
+        "traefik"
     ]
 }
