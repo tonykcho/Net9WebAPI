@@ -46,13 +46,13 @@ public class JobApplicationTest : IntegrationTestBase
         var result = await WebApplicationFixture.Client.GetAsync("/api/JobApplications");
 
         // Assert
-        Assert.Equal(HttpStatusCode.Unauthorized, result.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, result.StatusCode);
         Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
 
-        // var content = await result.Content.ReadFromJsonAsync<IList<JobApplication>>();
-        // if (content is not null)
-        // {
-        //     Console.WriteLine(content.Count);
-        // }
+        var content = await result.Content.ReadFromJsonAsync<IList<JobApplication>>();
+        if (content is not null)
+        {
+            Console.WriteLine(content.Count);
+        }
     }
 }
