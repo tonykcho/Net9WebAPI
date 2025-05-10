@@ -13,7 +13,7 @@ namespace Net9WebAPI.API.Controllers;
 public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : BaseController
 {
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IList<JobApplicationDto>))]
     public async Task<IActionResult> GetJobApplications(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -30,7 +30,7 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JobApplicationDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetJobApplication(int id, CancellationToken cancellationToken = default)
     {
@@ -53,7 +53,7 @@ public class JobApplicationsController(ApiRequestPipeline apiRequestPipeline) : 
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JobApplicationDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateJobApplication([FromBody] CreateJobApplicationRequest request, CancellationToken cancellationToken = default)
     {
